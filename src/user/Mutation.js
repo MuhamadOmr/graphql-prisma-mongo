@@ -1,20 +1,21 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { prisma } = require('../generated/prisma-client/index.js')
 
 const Mutations = {
  
   async signup(parent, args, ctx, info) {
     // lowercase their email
-    args.email = args.email.toLowerCase();
+    const email = args.email.toLowerCase();
     // hash their password
     const password = await bcrypt.hash(args.password, 10);
     // create the user in the database
-    const user = await ctx.db.mutation.createUser(
+    const user = await prisma.mutation.createUser(
       {
         data: {
           ...args,
-          password,
-          permissions: { set: ['USER'] },
+          email,
+          password
         },
       },
       info
