@@ -15,6 +15,7 @@
     "node": ">=8.0.0"
   },
   "dependencies": {
+    "dotenv": "6.2.0",
     "bcryptjs": "2.4.3",
     "graphql-yoga": "~1.16.9",
     "jsonwebtoken": "8.4.0",
@@ -22,7 +23,6 @@
     "prisma-client-lib": "~1.23.2"
   },
   "devDependencies": {
-    "dotenv": "6.2.0",
     "nodemon": "1.18.9",
     "prisma": "~1.23.2",
     "babel-eslint": "^9.0.0",

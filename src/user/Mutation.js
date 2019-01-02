@@ -1,9 +1,8 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { prisma } = require('../generated/prisma-client/index.js')
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { prisma } = require("../generated/prisma-client/index.js");
 
 const Mutations = {
- 
   async signup(parent, args, ctx, info) {
     // lowercase their email
     const email = args.email.toLowerCase();
@@ -16,20 +15,20 @@ const Mutations = {
           ...args,
           email,
           password
-        },
+        }
       },
       info
     );
     // create the JWT token for them
     const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET);
     // We set the jwt as a cookie on the response
-    ctx.response.cookie('token', token, {
+    ctx.response.cookie("token", token, {
       httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 365, // 1 year cookie
+      maxAge: 1000 * 60 * 60 * 24 * 365 // 1 year cookie
     });
     // Finalllllly we return the user to the browser
     return user;
-  },
+  }
 };
 
 module.exports = Mutations;

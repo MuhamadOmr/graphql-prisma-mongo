@@ -1,4 +1,4 @@
-const { prisma } = require('../generated/prisma-client/index.js')
+const { prisma } = require("../generated/prisma-client/index.js");
 
 const Query = {
   me(parent, args, ctx, info) {
@@ -8,7 +8,7 @@ const Query = {
     }
     return prisma.query.user(
       {
-        where: { id: ctx.request.userId },
+        where: { id: ctx.request.userId }
       },
       info
     );
@@ -16,7 +16,7 @@ const Query = {
   async users(parent, args, ctx, info) {
     // 1. Check if they are logged in
     if (!ctx.request.userId) {
-      throw new Error('You must be logged in!');
+      throw new Error("You must be logged in!");
     }
     console.log(ctx.request.userId);
 
