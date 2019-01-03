@@ -1,16 +1,5 @@
 version: '3'
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
-    ports: 
-      - "4444:4444"
-    volumes:
-      - /app/node_modules
-      - .:/app   
-    env_file:
-      - .env
   prisma:
     image: prismagraphql/prisma:1.23
     restart: always
