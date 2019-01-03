@@ -1,18 +1,21 @@
-require('dotenv').config()
-const createServer = require('./createServer');
+require("dotenv").config();
+const createServer = require("./createServer");
 
 const server = createServer();
 
-server.express.use();
+// server.express.use();
 // TODO Use express middlware to populate current user
 
-server.start({
+server.start(
+  {
     cors: {
       credentials: true,
-      origin: process.env.FRONTEND_URL,
-    },
+      origin: process.env.FRONTEND_URL
+    }
   },
-  deets => {
-    console.log(`Server is now running on port http://localhost:${+deets.port}`);
+  options => {
+    console.log(
+      `Server is now running on port http://localhost:${+options.port}`
+    );
   }
 );

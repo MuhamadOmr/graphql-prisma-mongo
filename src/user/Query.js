@@ -1,4 +1,4 @@
-const { prisma } = require("../generated/prisma-client/index.js");
+// const { forwardTo } = require('prisma-binding');
 
 const Query = {
   me(parent, args, ctx, info) {
@@ -6,23 +6,24 @@ const Query = {
     if (!ctx.request.userId) {
       return null;
     }
-    return prisma.query.user(
+    return ctx.db.query.user(
       {
-        where: { id: ctx.request.userId }
+        where: { id: ctx.request.userId },
       },
       info
     );
   },
   async users(parent, args, ctx, info) {
-    // 1. Check if they are logged in
-    if (!ctx.request.userId) {
-      throw new Error("You must be logged in!");
-    }
-    console.log(ctx.request.userId);
+    // // 1. Check if they are logged in
+    // if (!ctx.request.userId) {
+    //   throw new Error('You must be logged in!');
+    // }
+    // console.log(ctx.request.userId);
+    // 2. Check if the user has the permissions to query all the users
 
     // 2. if they do, query all the users!
-    return prisma.query.users({}, info);
-  }
+    return ctx.db.query.users({}, info);
+  },
 };
 
 module.exports = Query;
