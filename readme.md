@@ -1,12 +1,13 @@
-# pushlog backend!
+# backend!
 
-pushlog based on:
+based on:
 
 - graphql
 - prisma
 - mongodb
 - jwt for authentication
 - joi for validation
+- docker
 
 # start
 
