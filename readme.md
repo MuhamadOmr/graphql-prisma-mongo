@@ -30,8 +30,7 @@ docker-compose up --build
 
 access playground at **API_ENDPOINT**
 
-test a query
-make `docker.env` file:
+test a query in playground
 
 ```GraphQL
 query {
