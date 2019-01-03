@@ -1,10 +1,10 @@
-version: '3'
+version: "3"
 services:
   prisma:
     image: prismagraphql/prisma:1.23
     restart: always
     ports:
-    - "4466:4466"
+      - "4466:4466"
     environment:
       PRISMA_CONFIG: |
         port: 4466
@@ -21,5 +21,24 @@ services:
       - "27018:27018"
     volumes:
       - mongo:/var/lib/mongo
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "4444:4444"
+    volumes:
+      - /app/node_modules
+      - .:/app
+    env_file:
+      - .env
+    depends_on:
+      - "prisma"
+      - "mongo"
+    command: >
+      sh -c "./wait-for-it.sh prisma:4466 --
+             ./wait-for-it.sh mongo:27018 --
+             npm run deploy &&
+             npm run start"
 volumes:
   mongo:
