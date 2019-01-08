@@ -30,12 +30,39 @@ docker-compose up --build
 
 access playground at **API_ENDPOINT**
 
-test a query in playground
+**available queries**
 
 ```GraphQL
 query {
   users {
     name
+  }
+}
+# Write your query or mutation here
+mutation {
+  signup(email:"mo@mo.com", password:"123456",name:"moahamd"){
+    name
+    token
+    id
+    email
+
+  }
+}
+
+mutation {
+  signin(email:"mo@mo.com", password:"123456"){
+    name
+    token
+    id
+    email
+
+  }
+}
+
+query{
+  me{
+    name
+    token
   }
 }
 ```

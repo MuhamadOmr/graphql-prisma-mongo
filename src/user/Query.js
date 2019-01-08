@@ -1,17 +1,17 @@
-// const { forwardTo } = require('prisma-binding');
+const { meQuerySchema } = require("./validation");
+const { extractJWTFromAuthHeader } = require("../helpers/auth/user");
 
 const Query = {
-  me(parent, args, ctx, info) {
-    // check if there is a current user ID
-    if (!ctx.request.userId) {
-      return null;
-    }
-    return ctx.db.query.user(
-      {
-        where: { id: ctx.request.userId }
-      },
-      info
-    );
+  async me(parent, args, ctx) {
+    const token = extractJWTFromAuthHeader(ctx.request);
+    const user = await ctx.db.query.user({
+      where: { id: ctx.request.userId }
+    });
+    console.log("user", user, "token", token);
+    return {
+      ...user,
+      token
+    };
   },
   async users(parent, args, ctx, info) {
     // // 1. Check if they are logged in
@@ -20,9 +20,19 @@ const Query = {
     // }
     // console.log(ctx.request.userId);
     // 2. Check if the user has the permissions to query all the users
+    console.log(ctx.request);
+    const validatedMeQuery = meQuerySchema.validate(args);
+    if (validatedMeQuery.error) return validatedMeQuery.error;
 
     // 2. if they do, query all the users!
-    return ctx.db.query.users({}, info);
+    return ctx.db.query.user(
+      {
+        data: {
+          ...validatedMeQuery.value
+        }
+      },
+      info
+    );
   }
 };
 

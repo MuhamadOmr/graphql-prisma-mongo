@@ -1,109 +1,40 @@
-# source: http://localhost:4466
-# timestamp: Mon Jan 07 2019 18:20:41 GMT+0200 (Eastern European Standard Time)
+module.exports = `
 
-type AggregateUser {
-  count: Int!
-}
+  directive @upper on FIELD_DEFINITION
+  directive @auth(roles: [String]) on FIELD_DEFINITION
 
-type BatchPayload {
-  """The number of nodes that have been affected by the Batch operation."""
-  count: Long!
-}
-
-scalar DateTime
-
-"""
-The `Long` scalar type represents non-fractional signed whole numeric values.
-Long can represent values between -(2^63) and 2^63 - 1.
-"""
-scalar Long
-
-type Mutation {
-  createUser(data: UserCreateInput!): User!
-  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
-  deleteUser(where: UserWhereUniqueInput!): User
-  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
-  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
-  deleteManyUsers(where: UserWhereInput): BatchPayload!
-}
-
-enum MutationType {
-  CREATED
-  UPDATED
-  DELETED
-}
-
-"""An object with an ID"""
-interface Node {
-  """The id of the object."""
-  id: ID!
-}
-
-"""Information about pagination in a connection."""
-type PageInfo {
-  """When paginating forwards, are there more items?"""
-  hasNextPage: Boolean!
-
-  """When paginating backwards, are there more items?"""
-  hasPreviousPage: Boolean!
-
-  """When paginating backwards, the cursor to continue."""
-  startCursor: String
-
-  """When paginating forwards, the cursor to continue."""
-  endCursor: String
-}
-
-type Query {
-  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
-  user(where: UserWhereUniqueInput!): User
-  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-
-  """Fetches an object given its ID"""
-  node(
-    """The ID of an object"""
-    id: ID!
-  ): Node
-}
-
-type Subscription {
-  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
-}
-
-type User implements Node {
+type User {
   id: ID!
   email: String!
-  password: String!
   name: String!
+  token: String
   timezone: String
   created_at: DateTime!
   updated_at: DateTime!
 }
 
-"""A connection to a list of items."""
-type UserConnection {
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
 
-  """A list of edges."""
-  edges: [UserEdge]!
-  aggregate: AggregateUser!
+type Mutation {
+  signup(email: String!, password: String!, name: String!): User!
+  signin(email: String!, password: String!): User
 }
 
-input UserCreateInput {
-  email: String!
-  password: String!
-  name: String!
-  timezone: String
+type Query {
+  users(
+    where: UserWhereInput
+    orderBy: UserOrderByInput
+    skip: Int
+    after: String
+    before: String
+    first: Int
+    last: Int
+  ): [User]!
+  me: User @auth
 }
 
-"""An edge in a connection."""
-type UserEdge {
-  """The item at the end of the edge."""
-  node: User!
-
-  """A cursor for use in pagination."""
-  cursor: String!
+input UserWhereUniqueInput {
+  id: ID
+  email: String
 }
 
 enum UserOrderByInput {
@@ -123,55 +54,6 @@ enum UserOrderByInput {
   updated_at_DESC
 }
 
-type UserPreviousValues {
-  id: ID!
-  email: String!
-  password: String!
-  name: String!
-  timezone: String
-  created_at: DateTime!
-  updated_at: DateTime!
-}
-
-type UserSubscriptionPayload {
-  mutation: MutationType!
-  node: User
-  updatedFields: [String!]
-  previousValues: UserPreviousValues
-}
-
-input UserSubscriptionWhereInput {
-  """Logical AND on all given filters."""
-  AND: [UserSubscriptionWhereInput!]
-
-  """Logical OR on all given filters."""
-  OR: [UserSubscriptionWhereInput!]
-
-  """Logical NOT on all given filters combined by AND."""
-  NOT: [UserSubscriptionWhereInput!]
-
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
-  mutation_in: [MutationType!]
-
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
-  updatedFields_contains: String
-
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
-  updatedFields_contains_every: [String!]
-
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
-  updatedFields_contains_some: [String!]
-  node: UserWhereInput
-}
-
 input UserUpdateInput {
   email: String
   password: String
@@ -179,12 +61,7 @@ input UserUpdateInput {
   timezone: String
 }
 
-input UserUpdateManyMutationInput {
-  email: String
-  password: String
-  name: String
-  timezone: String
-}
+
 
 input UserWhereInput {
   """Logical AND on all given filters."""
@@ -441,7 +318,6 @@ input UserWhereInput {
   updated_at_gte: DateTime
 }
 
-input UserWhereUniqueInput {
-  id: ID
-  email: String
-}
+scalar DateTime
+
+`;

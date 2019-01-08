@@ -15,17 +15,23 @@
     "node": ">=8.0.0"
   },
   "dependencies": {
-    "bcryptjs": "2.4.3",
+    "bcryptjs": "^2.4.3",
     "dotenv": "6.2.0",
+    "express-jwt": "^5.3.1",
+    "graphql": "^14.0.2",
+    "graphql-middleware": "^3.0.0",
+    "graphql-tools": "^4.0.3",
     "graphql-yoga": "~1.16.9",
-    "jsonwebtoken": "8.4.0",
+    "joi": "^14.3.1",
+    "joi-objectid": "^2.0.0",
+    "jsonwebtoken": "^8.4.0",
     "lodash": "^4.17.11",
+    "merge-graphql-schemas": "^1.5.8",
     "prisma-binding": "~2.1.6"
   },
   "devDependencies": {
     "babel-eslint": "^9.0.0",
     "prisma": "~1.23.2",
-    "graphql": "^14.0.2",
     "graphql-cli": "^3.0.4",
     "eslint": "^5.4.0",
     "eslint-config-airbnb-base": "^13.1.0",

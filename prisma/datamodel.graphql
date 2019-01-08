@@ -3,4 +3,7 @@ type User {
   email: String! @unique
   password: String!
   name: String!
+  timezone: String
+  created_at: DateTime! @createdAt
+  updated_at: DateTime! @updatedAt
 }

@@ -31,10 +31,10 @@ services:
       - /app/node_modules
       - .:/app
     env_file:
-      - docker.env
+      - .env
     depends_on:
       - "prisma"
       - "mongo"
-    command: sh -c './wait-for mongo:27018 && ./wait-for prisma:4466 -- npm run deploy && npm run start'
+    command: sh -c './wait-for mongo:27018 && ./wait-for prisma:4466 -- npm run deploy && npm run dev'
 volumes:
   mongo:
